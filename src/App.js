@@ -1,16 +1,38 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
 } from 'react-router-dom';
-// import logo from './logo.svg';
+import { listPokemonURL, errorPokemonURL } from './actions/listFilterPokemonActions';
 import Pokemons from './pages/Pokemons';
 import Pokedex from './pages/Pokedex';
 
 export default function App() {
+  const dispatch = useDispatch();
+  const getPokemonsURLs = (URL) => {
+    fetch(URL)
+      .then((response) => (
+        response
+          .json()
+          .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+          .then(
+            (res) => {
+              const dispatchResults = res.results
+                .forEach((arrPokemon) => dispatch(listPokemonURL(arrPokemon)));
+              const fetchNext = res.next && getPokemonsURLs(res.next);
+              Promise.all([dispatchResults, fetchNext]);
+            },
+            (err) => dispatch(errorPokemonURL(err.message)),
+          )
+      ));
+  };
+  useEffect(() => {
+    getPokemonsURLs('https://pokeapi.co/api/v2/pokemon/');
+  }, []);
   return (
     <Router>
       <div>
