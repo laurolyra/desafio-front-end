@@ -2,17 +2,10 @@ import React from 'react';
 // add link to pokemon. instead of just mmapping info.
 
 // something like <Route render(() => <PokemonDetails />)>
-export default function PokemonCard({ pokemon }) {
+export default function PokemonCard({ foundPokemon }) {
   return (
     <div>
-      {Object.keys(pokemon)
-        .map((key) => (
-          <div>
-            {key}
-            :
-            { pokemon[key] }
-          </div>
-        ))}
+      <h1>Name: {foundPokemon?.name}</h1>
     </div>
   );
 }

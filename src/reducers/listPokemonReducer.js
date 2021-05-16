@@ -1,4 +1,4 @@
-import { LIST_POKEMON_URL, LIST_POKEMON_END, ERROR_POKEMON_URL, } from '../actions/listFilterPokemonActions';
+import { LIST_POKEMON_URL, LIST_POKEMON_END, ERROR_POKEMON_URL } from '../actions/listPokemonActions';
 
 const initialState = {
   pokemons: [],
@@ -6,7 +6,7 @@ const initialState = {
   listing: false,
 };
 
-const listFilterPokemonReducer = (state = initialState, action) => {
+const listPokemonReducer = (state = initialState, action) => {
   switch (action.type) {
     case LIST_POKEMON_URL:
       return { ...state, pokemons: [...state.pokemons, action.data], listing: true };
@@ -19,4 +19,4 @@ const listFilterPokemonReducer = (state = initialState, action) => {
   }
 };
 
-export default listFilterPokemonReducer;
+export default listPokemonReducer;

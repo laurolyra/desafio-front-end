@@ -7,7 +7,7 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import { listPokemonURL, errorPokemonURL, listPokemonEnd } from './actions/listFilterPokemonActions';
+import { listPokemonURL, errorPokemonURL, listPokemonEnd } from './actions/listPokemonActions';
 import Pokemons from './pages/Pokemons';
 import Pokedex from './pages/Pokedex';
 
