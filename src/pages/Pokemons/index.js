@@ -11,7 +11,7 @@ export default function Pokemons() {
       <h2>Pokemons</h2>
       {listing && <div>Loading pokemons info. Please wait...</div>}
       {error && <div>{error}</div>}
-      {(!listing && pokemons)
+      {(!listing && pokemons.length > 0)
         && <PokeSearch />}
     </div>
   );

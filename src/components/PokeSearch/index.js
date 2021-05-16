@@ -24,7 +24,6 @@ export default function PokeSearch() {
   }, [foundPokemon]);
 
   return (
-    pokemons && (
     <div className="App">
       <h3>All right! Please, type a pokemon name or its id and I can show it to you!</h3>
       <input type="text" value={pokeCriteria} onChange={(e) => setPokeCriteria(e.target.value)} placeholder="Enter Id or name" />
@@ -32,6 +31,5 @@ export default function PokeSearch() {
       {foundPokemon && <PokemonCard pokemon={foundPokemon} />}
       {errorMessage && <h2>No pokemon found. Please, search again</h2>}
     </div>
-    )
   );
 }

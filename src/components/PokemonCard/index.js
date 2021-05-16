@@ -1,11 +1,35 @@
-import React from 'react';
-// add link to pokemon. instead of just mmapping info.
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+export default function PokemonCard({ pokemon }) {
+  const [pokeDetails, setPokeDetails] = useState([]);
+  const [errorDetails, setErrorDetails] = useState('');
 
-// something like <Route render(() => <PokemonDetails />)>
-export default function PokemonCard({ foundPokemon }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setErrorDetails(false);
+    fetch(pokemon.url)
+      .then((response) => (
+        response
+          .json()
+          .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+          .then(
+            (res) => setPokeDetails(res),
+            () => setErrorDetails(true),
+          )
+      ));
+  }, [pokemon]);
   return (
-    <div>
-      <h1>Name: {foundPokemon?.name}</h1>
-    </div>
+    Object.entries(pokemon).length > 0 && (
+      <div>
+        <h1>
+          {pokemon.name}
+        </h1>
+        <div>
+          {pokeDetails.sprites && <img alt={`${pokemon.name}_image`} src={pokeDetails.sprites.front_default} />}
+        </div>
+        {errorDetails ? <div>Failed to find more information. please try again.</div> : <button type="button" onClick={() => console.log(pokeDetails)}>Add to PokeDéx</button>}
+      </div>
+    )
   );
 }
