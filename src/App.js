@@ -7,7 +7,7 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import { listPokemonURL, errorPokemonURL } from './actions/listFilterPokemonActions';
+import { listPokemonURL, errorPokemonURL, listPokemonEnd } from './actions/listFilterPokemonActions';
 import Pokemons from './pages/Pokemons';
 import Pokedex from './pages/Pokedex';
 
@@ -23,7 +23,7 @@ export default function App() {
             (res) => {
               const dispatchResults = res.results
                 .forEach((arrPokemon) => dispatch(listPokemonURL(arrPokemon)));
-              const fetchNext = res.next && getPokemonsURLs(res.next);
+              const fetchNext = res.next ? getPokemonsURLs(res.next) : dispatch(listPokemonEnd());
               Promise.all([dispatchResults, fetchNext]);
             },
             (err) => dispatch(errorPokemonURL(err.message)),
