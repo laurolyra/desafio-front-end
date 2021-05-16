@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { incrementPokemon, decrementPokemon } from '../../actions/pokemonCountActions';
-// import logo from '../../logo.svg';
 import '../../App.css';
 import PokemonCard from '../../components/PokemonCard';
 
 export default function Pokemons() {
   const [pokemonsFromAPI, setPokemonsFromAPI] = useState([]);
   const dispatch = useDispatch();
-  const item = useSelector((state) => state.pokemon);
+  const item = useSelector((state) => state.pokemonCountReducer.pokemon);
+
+  useEffect(() => {
+    console.log("gotta catch 'em all!", item);
+  }, []);
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon/?limit=100')
@@ -22,7 +25,7 @@ export default function Pokemons() {
           )
       ));
   }, []);
-  console.log('item', item);
+
   return (
     <div className="App">
       <h2>Pokemons</h2>

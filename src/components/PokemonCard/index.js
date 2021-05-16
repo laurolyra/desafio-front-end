@@ -7,7 +7,7 @@ export default function PokemonCard({ pokemon }) {
     <div>
       {Object.keys(pokemon)
         .map((key) => (
-          <div key={`${pokemon.name}`}>
+          <div>
             {key}
             :
             { pokemon[key] }
