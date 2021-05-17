@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { addToPokedex } from '../../actions/pokedexActions';
+
 export default function PokemonCard({ pokemon }) {
   const [pokeDetails, setPokeDetails] = useState([]);
   const [errorDetails, setErrorDetails] = useState('');
@@ -28,7 +30,7 @@ export default function PokemonCard({ pokemon }) {
         <div>
           {pokeDetails.sprites && <img alt={`${pokemon.name}_image`} src={pokeDetails.sprites.front_default} />}
         </div>
-        {errorDetails ? <div>Failed to find more information. please try again.</div> : <button type="button" onClick={() => console.log(pokeDetails)}>Add to PokeDéx</button>}
+        {errorDetails ? <div>Failed to find more information. please try again.</div> : <button type="button" onClick={() => dispatch(addToPokedex(pokeDetails))}>Add to PokeDéx</button>}
       </div>
     )
   );
