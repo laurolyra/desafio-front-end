@@ -10,6 +10,7 @@ import {
 import { listPokemonURL, errorPokemonURL, listPokemonEnd } from './actions/listPokemonActions';
 import Pokemons from './pages/Pokemons';
 import Pokedex from './pages/Pokedex';
+import PokemonAllInfo from './pages/PokemonAllInfo';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -48,7 +49,8 @@ export default function App() {
         </nav>
         <Switch>
           <Route path="/pokedex" render={() => <Pokedex />} />
-          <Route path="/" render={() => <Pokemons />} />
+          <Route path="/pokemon/:id" render={() => <PokemonAllInfo />} />
+          <Route path="/" exact render={() => <Pokemons />} />
         </Switch>
       </div>
     </Router>
