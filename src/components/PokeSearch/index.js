@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import '../../App.css';
 import { searchByName, searchByNumber } from '../../actions/findPokemonActions';
 import PokemonCard from '../PokemonCard';
 
@@ -24,7 +23,7 @@ export default function PokeSearch() {
   }, [foundPokemon]);
 
   return (
-    <div className="App">
+    <div>
       <h3>All right! Please, type a pokemon name or its id and I can show it to you!</h3>
       <input type="text" value={pokeCriteria} onChange={(e) => setPokeCriteria(e.target.value)} placeholder="Enter Id or name" />
       <button type="button" onClick={() => searchPokemon()}> Search!</button>
