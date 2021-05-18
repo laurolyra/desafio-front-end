@@ -5,35 +5,28 @@ import { useSelector } from 'react-redux';
 export default function PokemonAllInfo({ selected }) {
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [errorDetails, setErrorDetails] = useState(false);
-  const [selectedAbility, setSelectedAbility] = useState([]);
+  const [selectedAbility, setSelectedAbility] = useState('');
 
-  // const { selectedPokemon } = useSelector((state) => state.pokedexReducer);
-
-  const handleAbility = (abilityURL) => {
-    console.log('ability', abilityURL)
-    // setErrorDetails(false);
-    // setLoadingInfo(true);
-    // fetch(abilityURL)
-    //   .then((response) => (
-    //     response
-    //       .json()
-    //       .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
-    //       .then(
-    //         (res) => setSelectedAbility(res),
-    //         () => setErrorDetails(true),
-    //       )
-    //   ));
-    // setLoadingInfo(false);
+  const showShortEffect = () => {
+    const divText = selectedAbility.effect_entries.map((move) => move.language.name === 'en' && <div key={`${move}_short-effect`}>{move.short_effect}</div>);
+    return divText;
   };
 
-  useEffect(() => {
-    selected.abilities.map((arr) => console.log(arr.ability.url));
-
-  }, []);
-  // const showShortEffect = () => selectedAbilities.effect_entries.map((move) => move.language.name === 'en' && <div key={`${move}_short-effect`}>{move.short_effect}</div>);
-
-  // const showShortEffect = () => console.log('moveInfo', selectedAbility);
-
+  const selectAbility = (url) => {
+    setErrorDetails(false);
+    setLoadingInfo(true);
+    fetch(url)
+      .then((response) => (
+        response
+          .json()
+          .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+          .then(
+            (res) => setSelectedAbility(res),
+            () => setErrorDetails(true),
+          )
+      ));
+    setLoadingInfo(false);
+  };
 
   const showStats = (key) => {
     const stats = selected.stats.filter((stat) => stat.stat.name === key);
@@ -63,13 +56,13 @@ export default function PokemonAllInfo({ selected }) {
         Abilities:
         {selected.abilities
           .map((obj) => (
-            <li onClick={() => handleAbility(obj.ability.url)}>
+            <li key={obj.ability.url} onClick={() => selectAbility(obj.ability.url)}>
               {obj.ability.name}
             </li>
           ))}
       </ul>
+      {selectedAbility && showShortEffect()}
       <div>
-        {/* {selectedAbility ? showShortEffect() : null} */}
         {errorDetails && <div>failed to load Ability description. Please try again.</div>}
       </div>
       <div>

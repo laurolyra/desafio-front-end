@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import PokedexCard from '../../components/PokedexCard';
-// import logo from '../../logo.svg';
 
 export default function Pokedex() {
   const { pokedex } = useSelector((state) => state.pokedexReducer);
@@ -9,7 +8,7 @@ export default function Pokedex() {
   return (
     <div>
       <h2>Pokedex</h2>
-      {pokedex.map((pokeObj) => <PokedexCard pokemonInfo={pokeObj} />)}
+      {pokedex.map((pokeObj) => <PokedexCard key={`PokeDexCard_${pokeObj.id}`} pokemonInfo={pokeObj} />)}
     </div>
   );
 }

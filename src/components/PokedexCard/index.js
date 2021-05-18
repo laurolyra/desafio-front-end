@@ -9,10 +9,10 @@ export default function PokedexCard({ pokemonInfo }) {
   const dispatch = useDispatch();
 
   return (
-    <div key={`${pokemonInfo.name}`}>
+    <div>
       <h3 onClick={() => setShowInfo(true)}>{pokemonInfo.name}</h3>
       <img alt={`${pokemonInfo.name}_card`} src={`${pokemonInfo.sprites.front_default}`} onClick={() => setShowInfo(true)} />
-      {showInfo ? <PokemonAllInfo selected={pokemonInfo} /> : null}
+      {showInfo ? <PokemonAllInfo key={`info_${pokemonInfo.id}`} selected={pokemonInfo} /> : null}
       <div>
         <button type="button" onClick={() => dispatch(removeFromPokedex(pokemonInfo.id))}>Remove from pokedex</button>
         <button type="button" onClick={() => setShowInfo(false)}>Close</button>
