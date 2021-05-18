@@ -5,6 +5,11 @@ const initialState = {
   selectedPokemon: {},
 };
 
+const removeSpecificPokemon = (pokedex, index) => {
+  pokedex.splice(index, 1);
+  return pokedex;
+};
+
 const pokedexReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_POKEDEX:
@@ -12,7 +17,7 @@ const pokedexReducer = (state = initialState, action) => {
     case SELECT_POKEMON:
       return { ...state, selectedPokemon: action.pokemon };
     case REMOVE_FROM_POKEDEX:
-      return { pokedex: state.pokedex.filter((obj) => obj.id !== action.pokemonId) };
+      return { pokedex: removeSpecificPokemon(state.pokedex, action.cardId) };
     default:
       return state;
   }

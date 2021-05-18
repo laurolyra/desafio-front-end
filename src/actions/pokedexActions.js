@@ -10,6 +10,6 @@ export const selectPokemon = (pokemon) => (
   { type: SELECT_POKEMON, pokemon }
 );
 
-export const removeFromPokedex = (pokemonId) => (
-  { type: REMOVE_FROM_POKEDEX, pokemonId }
+export const removeFromPokedex = (cardId) => (
+  { type: REMOVE_FROM_POKEDEX, cardId }
 );

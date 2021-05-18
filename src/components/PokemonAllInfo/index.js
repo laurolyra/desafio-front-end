@@ -113,7 +113,7 @@ export default function PokemonAllInfo({ selected }) {
     return stats[0].base_stat;
   };
 
-  return (
+  return !loadingInfo ? (
     <div>
       <div>
         Name:&nbsp;
@@ -139,7 +139,9 @@ export default function PokemonAllInfo({ selected }) {
           {evolutionChain.map(({ species_name }) => <li key={`evolution_${species_name}`}>{species_name}</li>)}
         </div>
       )}
-      {errorEvolution && <div>Failed to load evolution chain. please close this card and open it again.</div>}
+      {errorEvolution && (
+        <div>Failed to load evolution chain. please close this card and open it again.</div>
+      )}
       {selectedType && (
         <div>
           Pokemons of the same type:
@@ -181,5 +183,5 @@ export default function PokemonAllInfo({ selected }) {
         Evolution steps:
       </div>
     </div>
-  );
-}
+  ) : <div>Loading...</div>;
+};

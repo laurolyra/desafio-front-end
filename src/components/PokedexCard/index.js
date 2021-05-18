@@ -4,7 +4,7 @@ import PokemonAllInfo from '../PokemonAllInfo';
 
 import { removeFromPokedex } from '../../actions/pokedexActions';
 
-export default function PokedexCard({ pokemonInfo }) {
+export default function PokedexCard({ pokemonInfo, cardId }) {
   const [showInfo, setShowInfo] = useState(false);
   const dispatch = useDispatch();
   const [customImage, setCustomImage] = useState([]);
@@ -29,7 +29,8 @@ export default function PokedexCard({ pokemonInfo }) {
         <button onClick={() => hiddenFileInput.current.click()}>Upload File</button>
         <input ref={hiddenFileInput} type="file" id="file-input" onChange={(e) => handleImage(e)} style={{ display: 'none' }} />
         <button type="button" disabled={customImage.length === 0} onClick={() => setCustomImage([])}>Remove custom Image</button>
-        <button type="button" onClick={() => dispatch(removeFromPokedex(pokemonInfo.id))}>Remove from pokedex</button>
+        <button type="button" onClick={() => dispatch(removeFromPokedex(cardId))}>Remove from pokedex</button>
+        {/* <button type="button" onClick={() => console.log(cardId)}>Remove from pokedex</button> */}
         <button type="button" onClick={() => setShowInfo(false)}>Close</button>
       </div>
       {showInfo ? <PokemonAllInfo key={`info_${pokemonInfo.id}`} selected={pokemonInfo} /> : null}
