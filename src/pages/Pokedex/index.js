@@ -8,7 +8,9 @@ export default function Pokedex() {
   return (
     <div>
       <h2>Pokedex</h2>
-      {pokedex.map((pokeObj) => <PokedexCard key={`PokeDexCard_${pokeObj.id}`} pokemonInfo={pokeObj} />)}
+      <div className="pokedex-main" style={{ margin: '0 -5px', display: 'flex', justifyContent: 'space-around' }}>
+        {pokedex.map((pokeObj) => <PokedexCard style={{ margin: '0 5px' }} key={`PokeDexCard_${pokeObj.id}`} pokemonInfo={pokeObj} />)}
+      </div>
     </div>
   );
 }

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function PokemonAllInfo({ selected }) {
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [errorDetails, setErrorDetails] = useState(false);
   const [selectedAbility, setSelectedAbility] = useState('');
+  const [selectedType, setSelectedType] = useState(null);
+  const [evolutionChain, setEvolutionChain] = useState(null);
 
   const showShortEffect = () => {
     const divText = selectedAbility.effect_entries.map((move) => move.language.name === 'en' && <div key={`${move}_short-effect`}>{move.short_effect}</div>);
@@ -26,6 +28,84 @@ export default function PokemonAllInfo({ selected }) {
     setLoadingInfo(false);
   };
 
+  const fetchType = (url) => {
+    setErrorDetails(false);
+    setLoadingInfo(true);
+    fetch(url)
+      .then((response) => (
+        response
+          .json()
+          .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+          .then(
+            (res) => setSelectedType(res),
+            () => setErrorDetails(true),
+          )
+      ));
+    setLoadingInfo(false);
+  };
+
+  const buildEvoChain = (chain) => {
+    let evoChain = [];
+    let evoData = chain.chain;
+
+    do {
+      let numberOfEvolutions = evoData.evolves_to.length;
+
+      evoChain.push({
+        "species_name": evoData.species.name,
+        "min_level": !evoData ? 1 : evoData.min_level,
+        "trigger_name": !evoData ? null : evoData.trigger?.name,
+        "item": !evoData ? null : evoData.item
+      });
+
+      if (numberOfEvolutions > 1) {
+        for (let i = 1; i < numberOfEvolutions; i++) {
+          evoChain.push({
+            "species_name": evoData.evolves_to[i].species.name,
+            "min_level": !evoData.evolves_to[i] ? 1 : evoData.evolves_to[i].min_level,
+            "trigger_name": !evoData.evolves_to[i] ? null : evoData.evolves_to[i].trigger?.name,
+            "item": !evoData.evolves_to[i] ? null : evoData.evolves_to[i].item
+          });
+        }
+      }
+
+      evoData = evoData.evolves_to[0];
+    } while (evoData !== undefined && evoData.hasOwnProperty('evolves_to'));
+    evoChain.length > 1 && setEvolutionChain(evoChain);
+  };
+
+  const fetchEvolutionChain = (url) => {
+    setErrorDetails(false);
+    setLoadingInfo(true);
+    fetch(url)
+      .then((response) => (
+        response
+          .json()
+          .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+          .then(
+            (res) => buildEvoChain(res),
+            () => setErrorDetails(true),
+          )
+      ));
+    setLoadingInfo(false);
+  };
+
+  useEffect(() => {
+    setErrorDetails(false);
+    setLoadingInfo(true);
+    fetch(`https://pokeapi.co/api/v2/pokemon-species/${selected.id}`)
+      .then((response) => (
+        response
+          .json()
+          .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+          .then(
+            (res) => fetchEvolutionChain(res.evolution_chain.url),
+            () => setErrorDetails(true),
+          )
+      ));
+    setLoadingInfo(false);
+  }, []);
+
   const showStats = (key) => {
     const stats = selected.stats.filter(({ stat }) => stat.name === key);
     return stats[0].base_stat;
@@ -47,8 +127,22 @@ export default function PokemonAllInfo({ selected }) {
       </div>
       <ul>
         Types:&nbsp;
-        {selected.types.map(({ type }) => <li key={type.name}>{type.name}</li>)}
+        {selected.types
+          .map(({ type }) =>
+            <li key={type.name} onClick={() => fetchType(type.url)}>{type.name}</li>)}
       </ul>
+      {evolutionChain && (
+        <div>
+          Evolution Chain:&nbsp;
+          {evolutionChain.map(({ species_name }) => <li key={`evolution_${species_name}`}>{species_name}</li>)}
+        </div>
+      )}
+      {selectedType && (
+        <div>
+          Pokemons of the same type:
+          {selectedType.pokemon.map((obj) => <li key={`similar${obj.pokemon.name}`}>{obj.pokemon.name}</li>)}
+        </div>
+      )}
       <div className="Ability-block">
         <ul style={{ margin: '0' }}>
           Abilities:

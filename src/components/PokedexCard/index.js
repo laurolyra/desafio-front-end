@@ -16,26 +16,23 @@ export default function PokedexCard({ pokemonInfo }) {
 
   const showImage = () => {
     const correctDiv = customImage.length > 0
-      ? <img alt={`${pokemonInfo.name}_card`} src={customImage} onClick={() => setShowInfo(true)} />
-      : <img alt={`${pokemonInfo.name}_card`} src={`${pokemonInfo.sprites.front_default}`} onClick={() => setShowInfo(true)} />
+      ? <img alt={`${pokemonInfo.name}_card`} src={customImage} style={{ maxWidth: '95.99px', maxHeight: '95.99px' }} />
+      : <img alt={`${pokemonInfo.name}_card`} src={`${pokemonInfo.sprites.front_default}`} style={{ maxWidth: '95.99px', maxHeight: '95.99px' }} />;
     return correctDiv;
   };
 
   return (
     <div>
       <h3 onClick={() => setShowInfo(true)}>{pokemonInfo.name}</h3>
-      {showImage()}
-
-      <button onClick={() => hiddenFileInput.current.click()}>Upload File</button>
-      <input ref={hiddenFileInput} type="file" id="file-input" onChange={(e) => handleImage(e)} style={{ display: 'none' }} />
-
-      <button type="button" disabled={customImage.length === 0} onClick={() => setCustomImage([])}>Remove custom Image</button>
-
-      {showInfo ? <PokemonAllInfo key={`info_${pokemonInfo.id}`} selected={pokemonInfo} /> : null}
-      <div>
+      <div className="card-top">
+        {showImage()}
+        <button onClick={() => hiddenFileInput.current.click()}>Upload File</button>
+        <input ref={hiddenFileInput} type="file" id="file-input" onChange={(e) => handleImage(e)} style={{ display: 'none' }} />
+        <button type="button" disabled={customImage.length === 0} onClick={() => setCustomImage([])}>Remove custom Image</button>
         <button type="button" onClick={() => dispatch(removeFromPokedex(pokemonInfo.id))}>Remove from pokedex</button>
         <button type="button" onClick={() => setShowInfo(false)}>Close</button>
       </div>
+      {showInfo ? <PokemonAllInfo key={`info_${pokemonInfo.id}`} selected={pokemonInfo} /> : null}
       <hr />
     </div>
   );
