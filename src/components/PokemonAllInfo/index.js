@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default function PokemonAllInfo({ selected }) {
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [errorDetails, setErrorDetails] = useState(false);
+  const [errorEvolution, setErrorEvolution] = useState(false);
   const [selectedAbility, setSelectedAbility] = useState('');
   const [selectedType, setSelectedType] = useState(null);
   const [evolutionChain, setEvolutionChain] = useState(null);
@@ -45,6 +46,7 @@ export default function PokemonAllInfo({ selected }) {
   };
 
   const buildEvoChain = (chain) => {
+    // source: https://stackoverflow.com/questions/39112862/pokeapi-angular-how-to-get-pokemons-evolution-chain
     let evoChain = [];
     let evoData = chain.chain;
 
@@ -52,26 +54,26 @@ export default function PokemonAllInfo({ selected }) {
       let numberOfEvolutions = evoData.evolves_to.length;
 
       evoChain.push({
-        "species_name": evoData.species.name,
-        "min_level": !evoData ? 1 : evoData.min_level,
-        "trigger_name": !evoData ? null : evoData.trigger?.name,
-        "item": !evoData ? null : evoData.item
+        species_name: evoData.species.name,
+        min_level: !evoData ? 1 : evoData.min_level,
+        trigger_name: !evoData ? null : evoData.trigger?.name,
+        item: !evoData ? null : evoData.item
       });
 
       if (numberOfEvolutions > 1) {
         for (let i = 1; i < numberOfEvolutions; i++) {
           evoChain.push({
-            "species_name": evoData.evolves_to[i].species.name,
-            "min_level": !evoData.evolves_to[i] ? 1 : evoData.evolves_to[i].min_level,
-            "trigger_name": !evoData.evolves_to[i] ? null : evoData.evolves_to[i].trigger?.name,
-            "item": !evoData.evolves_to[i] ? null : evoData.evolves_to[i].item
+            species_name: evoData.evolves_to[i].species.name,
+            min_level: !evoData.evolves_to[i] ? 1 : evoData.evolves_to[i].min_level,
+            trigger_name: !evoData.evolves_to[i] ? null : evoData.evolves_to[i].trigger?.name,
+            item: !evoData.evolves_to[i] ? null : evoData.evolves_to[i].item
           });
         }
       }
 
       evoData = evoData.evolves_to[0];
     } while (evoData !== undefined && evoData.hasOwnProperty('evolves_to'));
-    evoChain.length > 1 && setEvolutionChain(evoChain);
+    return evoChain.length > 1 && setEvolutionChain(evoChain);
   };
 
   const fetchEvolutionChain = (url) => {
@@ -84,7 +86,7 @@ export default function PokemonAllInfo({ selected }) {
           .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
           .then(
             (res) => buildEvoChain(res),
-            () => setErrorDetails(true),
+            () => setErrorEvolution(true),
           )
       ));
     setLoadingInfo(false);
@@ -100,7 +102,7 @@ export default function PokemonAllInfo({ selected }) {
           .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
           .then(
             (res) => fetchEvolutionChain(res.evolution_chain.url),
-            () => setErrorDetails(true),
+            () => setErrorEvolution(true),
           )
       ));
     setLoadingInfo(false);
@@ -137,6 +139,7 @@ export default function PokemonAllInfo({ selected }) {
           {evolutionChain.map(({ species_name }) => <li key={`evolution_${species_name}`}>{species_name}</li>)}
         </div>
       )}
+      {errorEvolution && <div>Failed to load evolution chain. please close this card and open it again.</div>}
       {selectedType && (
         <div>
           Pokemons of the same type:
@@ -155,7 +158,6 @@ export default function PokemonAllInfo({ selected }) {
         </ul>
         <div>{selectedAbility && <div>Ability details:{showShortEffect()}</div>}</div>
       </div>
-      {loadingInfo && <div>Loading move info...</div>}
       <div>
         {errorDetails && <div>failed to load Ability description. Please try again.</div>}
       </div>

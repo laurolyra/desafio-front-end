@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PokemonAllInfo from '../PokemonAllInfo';
 
-import { removeFromPokedex, selectPokemon } from '../../actions/pokedexActions';
+import { removeFromPokedex } from '../../actions/pokedexActions';
 
 export default function PokedexCard({ pokemonInfo }) {
   const [showInfo, setShowInfo] = useState(false);
