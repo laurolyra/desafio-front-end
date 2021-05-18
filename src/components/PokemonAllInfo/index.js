@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-// import logo from '../../logo.svg';
+import React, { useState } from 'react';
 
 export default function PokemonAllInfo({ selected }) {
   const [loadingInfo, setLoadingInfo] = useState(false);
@@ -29,7 +27,7 @@ export default function PokemonAllInfo({ selected }) {
   };
 
   const showStats = (key) => {
-    const stats = selected.stats.filter((stat) => stat.stat.name === key);
+    const stats = selected.stats.filter(({ stat }) => stat.name === key);
     return stats[0].base_stat;
   };
 
@@ -49,19 +47,21 @@ export default function PokemonAllInfo({ selected }) {
       </div>
       <ul>
         Types:&nbsp;
-        {selected.types.map((obj) => <li>{obj.type.name}</li>)}
+        {selected.types.map(({ type }) => <li key={type.name}>{type.name}</li>)}
       </ul>
-      {/* {loadingInfo && <div>Loading move info...</div>} */}
-      <ul>
-        Abilities:
-        {selected.abilities
-          .map((obj) => (
-            <li key={obj.ability.url} onClick={() => selectAbility(obj.ability.url)}>
-              {obj.ability.name}
-            </li>
-          ))}
-      </ul>
-      {selectedAbility && showShortEffect()}
+      <div className="Ability-block">
+        <ul style={{ margin: '0' }}>
+          Abilities:
+          {selected.abilities
+            .map(({ ability }) => (
+              <li key={ability.url} onClick={() => selectAbility(ability.url)}>
+                {ability.name}
+              </li>
+            ))}
+        </ul>
+        <div>{selectedAbility && <div>Ability details:{showShortEffect()}</div>}</div>
+      </div>
+      {loadingInfo && <div>Loading move info...</div>}
       <div>
         {errorDetails && <div>failed to load Ability description. Please try again.</div>}
       </div>
@@ -83,7 +83,6 @@ export default function PokemonAllInfo({ selected }) {
       </div>
       <div>
         Evolution steps:
-      {/* inserir aqui a requisição pra obter a informação das pŕoximas evoluções */}
       </div>
     </div>
   );
