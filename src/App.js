@@ -35,9 +35,9 @@ export default function App() {
   }, []);
   return (
     <Router>
-      <div>
+      <div className="main-background">
         <nav>
-          <ul>
+          <ul className="nav-bar">
             <li>
               <Link to="/">Pokemons</Link>
             </li>

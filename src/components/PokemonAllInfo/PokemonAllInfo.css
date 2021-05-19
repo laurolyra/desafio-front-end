@@ -1,0 +1,17 @@
+.all-info > * {
+  font-size: 20px;
+  padding: 0px;
+  max-width: 150px;
+  margin: auto;
+}
+
+.all-info-list, .all-info-list > li {
+  list-style-type: none;
+}
+
+.info-box, .info-box li {
+  list-style-type: none;
+  color: #3B4CCA;
+  background-color: #FFDE00;
+  align-self: center;
+}

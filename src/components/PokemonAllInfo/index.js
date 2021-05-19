@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './PokemonAllInfo.css';
 
 export default function PokemonAllInfo({ selected }) {
   const [loadingInfo, setLoadingInfo] = useState(false);
@@ -114,7 +115,7 @@ export default function PokemonAllInfo({ selected }) {
   };
 
   return !loadingInfo ? (
-    <div>
+    <div className="all-info">
       <div>
         Name:&nbsp;
         {selected.name}
@@ -127,39 +128,40 @@ export default function PokemonAllInfo({ selected }) {
         Height(feet):&nbsp;
         {selected.height}
       </div>
-      <ul>
+      <ul className="all-info-list">
         Types:&nbsp;
         {selected.types
           .map(({ type }) =>
-            <li key={type.name} onClick={() => fetchType(type.url)}>{type.name}</li>)}
+            <li key={type.name} onClick={() => fetchType(type.url)} style={{cursor: 'pointer'}}>{type.name}</li>)}
       </ul>
+      {selectedType && (
+        <ul className="info-box">
+          Pokemons of the same type:
+          {selectedType.pokemon.map((obj) => <li key={`similar${obj.pokemon.name}`}>{obj.pokemon.name}</li>)}
+        </ul>
+      )}
       {evolutionChain && (
-        <div>
+        <ul className="all-info-list">
           Evolution Chain:&nbsp;
           {evolutionChain.map(({ species_name }) => <li key={`evolution_${species_name}`}>{species_name}</li>)}
-        </div>
+        </ul>
       )}
       {errorEvolution && (
         <div>Failed to load evolution chain. please close this card and open it again.</div>
       )}
-      {selectedType && (
-        <div>
-          Pokemons of the same type:
-          {selectedType.pokemon.map((obj) => <li key={`similar${obj.pokemon.name}`}>{obj.pokemon.name}</li>)}
-        </div>
-      )}
-      <div className="Ability-block">
-        <ul style={{ margin: '0' }}>
-          Abilities:
-          {selected.abilities
-            .map(({ ability }) => (
-              <li key={ability.url} onClick={() => selectAbility(ability.url)}>
-                {ability.name}
-              </li>
-            ))}
-        </ul>
-        <div>{selectedAbility && <div>Ability details:{showShortEffect()}</div>}</div>
-      </div>
+      <ul className="all-info-list">
+        Abilities:
+        {selected.abilities
+          .map(({ ability }) => (
+            <li
+              style={{cursor: 'pointer'}}
+              key={ability.url} 
+              onClick={() => selectAbility(ability.url)}>
+              {ability.name}
+            </li>
+          ))}
+      </ul>
+      {selectedAbility && <div>Ability details:{showShortEffect()}</div>}
       <div>
         {errorDetails && <div>failed to load Ability description. Please try again.</div>}
       </div>
@@ -178,9 +180,6 @@ export default function PokemonAllInfo({ selected }) {
       <div>
         HP:&nbsp;
         {showStats('hp')}
-      </div>
-      <div>
-        Evolution steps:
       </div>
     </div>
   ) : <div>Loading...</div>;

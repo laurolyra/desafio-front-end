@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PokemonAllInfo from '../PokemonAllInfo';
+import './PokedexCard.css'
 
 import { removeFromPokedex } from '../../actions/pokedexActions';
 
@@ -22,19 +23,17 @@ export default function PokedexCard({ pokemonInfo, cardId }) {
   };
 
   return (
-    <div>
+    <div className="card-box">
       <h3 onClick={() => setShowInfo(true)}>{pokemonInfo.name}</h3>
-      <div className="card-top">
         {showImage()}
-        <button onClick={() => hiddenFileInput.current.click()}>Upload File</button>
+      {showInfo ? <PokemonAllInfo key={`info_${pokemonInfo.id}`} selected={pokemonInfo} /> : null}
+      <div className="card-top">
+        <button type="button" onClick={() => hiddenFileInput.current.click()}>Change image</button>
         <input ref={hiddenFileInput} type="file" id="file-input" onChange={(e) => handleImage(e)} style={{ display: 'none' }} />
-        <button type="button" disabled={customImage.length === 0} onClick={() => setCustomImage([])}>Remove custom Image</button>
+        <button type="button" style={{display: customImage.length === 0 && 'none' }} onClick={() => setCustomImage([])}>Remove custom Image</button>
         <button type="button" onClick={() => dispatch(removeFromPokedex(cardId))}>Remove from pokedex</button>
-        {/* <button type="button" onClick={() => console.log(cardId)}>Remove from pokedex</button> */}
         <button type="button" onClick={() => setShowInfo(false)}>Close</button>
       </div>
-      {showInfo ? <PokemonAllInfo key={`info_${pokemonInfo.id}`} selected={pokemonInfo} /> : null}
-      <hr />
     </div>
   );
 }
