@@ -4,6 +4,9 @@ import rootReducer from '../reducers';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const pokemonStore = () => {
+  const myStore = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+  return myStore;
+};
 
-export default store;
+export default pokemonStore;
