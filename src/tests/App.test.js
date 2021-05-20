@@ -19,7 +19,7 @@ describe('Test App', () => {
     );
   }
 
-  test('show loading indicator till API responds', async () => {
+  test('Loading dummy page', async () => {
     renderApp();
     const welcomeMessage = screen.queryByText(/Gotta Catch 'em All!/i);
     const pokemonLink = screen.queryByText(/Pokemon/i);
