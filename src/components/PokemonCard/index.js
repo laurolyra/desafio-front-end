@@ -30,7 +30,7 @@ export default function PokemonCard({ pokemon }) {
         <div>
           {pokeDetails.sprites && <img alt={`${pokemon.name}_image`} src={pokeDetails.sprites.front_default} />}
         </div>
-        {errorDetails ? <div>Failed to find more information. please try again.</div> : <button type="button" onClick={() => dispatch(addToPokedex(pokeDetails))}>Add to PokeDéx</button>}
+        {errorDetails ? <div>Failed to find more information. please try again.</div> : <button type="button" data-testid="add-to-pokedex" onClick={() => dispatch(addToPokedex(pokeDetails))}>Add to PokeDéx</button>}
       </div>
     )
   );

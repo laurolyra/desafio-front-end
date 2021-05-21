@@ -50,4 +50,12 @@ Para conferir a cobertura de testes, basta instalar as dependências conforme in
 
 ---
 
-## Boa sorte!
+# Pontos de melhoria
+Há consciência de que a aplicação foi entregue como um MVP (_minimum value product_), por isso é importante frisar algumas melhorias já detectadas - que podem ser adotatas ao longo do desenvolvimento da aplicação. São elas:
+
+1. Melhorar a cobertura de testes;
+2. Aprimorar a estilização dos componentes;
+3. Tornar o código de construção das evoluções dos pokemons mais limpa;
+4. Aplicar mudanças de estilização sugeridas no ESlint (instalado na aplicação);
+5. Adotar uma arquitetura mais simples para gerenciamento de estado - como o ContextAPI
+6. Refatorar o componente PokemonAllInfo, que recebe muitas funções similares e trabalha com o estado local de uma forma não muito perfirmática.
