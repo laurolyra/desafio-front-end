@@ -58,4 +58,4 @@ Há consciência de que a aplicação foi entregue como um MVP (_minimum value p
 3. Tornar o código de construção das evoluções dos pokemons mais limpa;
 4. Aplicar mudanças de estilização sugeridas no ESlint (instalado na aplicação);
 5. Adotar uma arquitetura mais simples para gerenciamento de estado - como o ContextAPI
-6. Refatorar o componente PokemonAllInfo, que recebe muitas funções similares e trabalha com o estado local de uma forma não muito perfirmática.
+6. Refatorar o componente PokemonAllInfo, que recebe muitas funções similares e trabalha com o estado local de uma forma não muito performática.
