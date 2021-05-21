@@ -1,31 +1,46 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import {
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-
+import { createStore } from 'react-redux';
+import { MemoryRouter } from 'react-router';
+import { render, screen, waitFor, fireEvent, cleanup } from '@testing-library/react';
 import App from '../App';
-import pokemonStore from '../store';
+import pokemons from './pokeMock';
 
-describe('Test App', () => {
-  function renderApp(store = pokemonStore(), props = {}) {
-    return render(
-      <Provider store={store}>
-        <App {...props} />
-      </Provider>,
-    );
-  }
+import store from '../store'
+import PokeSearch from '../components/PokeSearch';
 
-  test('Loading dummy page', async () => {
-    renderApp();
-    const welcomeMessage = screen.queryByText(/Gotta Catch 'em All!/i);
-    const pokemonLink = screen.queryByText(/Pokemon/i);
-    const pokedexLink = screen.queryByText(/Pokedex/i);
-    await waitFor(() => expect(welcomeMessage).toBeInTheDocument());
-    await waitFor(() => expect(pokemonLink).toBeInTheDocument());
-    await waitFor(() => expect(pokedexLink).toBeInTheDocument());
+
+describe ('test for App container', () => {
+  it('should render some text on render', () => {
+    render (
+      <Provider store ={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    )
+
+    const initialtext = screen.getByText("Gotta Catch 'em All!");
+    waitFor(() =>expect(initialtext).toBeInTheDocument())
+  });
+  it('should render ok text after loading pokemons', () => {
+    jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve({
+        Pokemons: [...pokemons],
+      }),
+    }));
+    render (
+      <Provider store ={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <PokeSearch />
+        </MemoryRouter>
+      </Provider>
+    )
+
+    const initialtext = screen.getByText("All right! Please, type a pokemon name or its id and I can show it to you!");
+    waitFor(() =>expect(initialtext).toBeInTheDocument())
   });
 });

@@ -10,7 +10,7 @@ export default function Pokemons() {
     <div>
       <h2>Gotta Catch 'em All!</h2>
       {listing && <div>Loading pokemons info. Please wait...</div>}
-      {error && <div>{error}</div>}
+      {error && <div>Failed to load pokemons. Try again later!</div>}
       {(!listing && pokemons.length > 0)
         && <PokeSearch />}
     </div>

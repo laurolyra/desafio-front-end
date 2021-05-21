@@ -27,8 +27,8 @@ export default function PokeSearch() {
     <div>
       <h3>All right! Please, type a pokemon name or its id and I can show it to you!</h3>
       <div className="poke-input-button">
-        <input type="text" value={pokeCriteria} onChange={(e) => setPokeCriteria(e.target.value)} placeholder="Enter Id or name" />
-        <button type="button" onClick={() => searchPokemon()}> Search!</button>
+        <input type="text" data-testid="pokemon-input-search" value={pokeCriteria} onChange={(e) => setPokeCriteria(e.target.value)} placeholder="Enter Id or name" />
+        <button type="button" data-testid="search-pokemon" onClick={() => searchPokemon()}> Search!</button>
       </div>
       {foundPokemon && <PokemonCard pokemon={foundPokemon} />}
       {errorMessage && <h2>No pokemon found. Please, search again</h2>}
