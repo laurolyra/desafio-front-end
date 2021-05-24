@@ -48,6 +48,8 @@ Para conferir a cobertura de testes, basta instalar as dependências conforme in
     - Ao clicar em um item da lista de habilidades mostrar o `short_effect` da mesma
 5. Exclusão dos pokémons que foram adicionados a Pokédex.
 
+Com relação ao ponto 5, cabe um adendo: cada um dos cards dos pokemons na pokedex possui uma identificação específica, a qual será utilizada quando do momento de remover a criatura da pokedex. Ou seja, ainda que 5 pikachus sejam adicionados, ao clicar em "remover", somente aquele card será excluído da pokedex, mantendo os demais intactos.
+
 ---
 
 # Pontos de melhoria
